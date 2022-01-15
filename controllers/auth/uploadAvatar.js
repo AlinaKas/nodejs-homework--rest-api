@@ -6,7 +6,7 @@ const { User } = require("../../models");
 // const { FOLDER_FOR_AVATARS } = process.env;
 // const avatarsDir = path.join(__dirname, "../../", "public/avatars");
 
-const avatarsDir = path.resolve("./public/avatars"); //папка для сохранения
+const avatarsDir = path.resolve("./public/avatars"); //папка для хранения аватаров
 
 const uploadAvatar = async (req, res) => {
   const { _id: id } = req.user;
@@ -20,7 +20,7 @@ const uploadAvatar = async (req, res) => {
 
     await fs.rename(tempUpload, resultPath);
 
-    const avatar = path.join(`${id}`, filename); //путь к картинке
+    const avatar = path.join("/avatars", `${id}`, filename); //путь к картинке
     // const avatar = path.join(`${id}`, `${id}_${filename}`); // добавляет id к имени файла
 
     await User.findByIdAndUpdate(id, { avatarURL: avatar }, { new: true });
