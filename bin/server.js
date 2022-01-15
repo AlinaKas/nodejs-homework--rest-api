@@ -1,6 +1,6 @@
 const mongo = require("mongoose");
 const app = require("../app");
-const { mkdir } = require("fs/promises");
+// const { mkdir } = require("fs/promises");
 const { colors } = require("colors");
 
 const { PORT = 5000, DB_HOST } = process.env;

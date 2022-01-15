@@ -11,7 +11,7 @@ const { auth: ctrl } = require("../../controllers");
 const { joiUserSchema, joiSubscriptionSchema } = require("../../models/User");
 const router = express.Router();
 
-// Route /api/auth/signup
+// Route /api/users/signup
 router.post(
   "/signup",
   limiter(TIME_REQUEST_LIMIT, REQUEST_LIMIT),

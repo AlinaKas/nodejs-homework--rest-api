@@ -1,8 +1,8 @@
 const { User } = require("../../models");
 
 const current = async (req, res) => {
-  const { token, email, subscription, _id } = req.user;
-  console.log(req.user);
+  const { token, email, subscription, _id, avatarURL } = req.user;
+
   await User.findOne({ token });
 
   res.json({
@@ -12,6 +12,7 @@ const current = async (req, res) => {
       email,
       subscription,
       _id,
+      avatarURL,
     },
   });
 };

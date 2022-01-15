@@ -4,8 +4,8 @@ const fs = require("fs/promises");
 const path = require("path");
 
 // const { FOLDER_FOR_AVATARS } = process.env;
-const avatarsDir = path.resolve("public/avatars");
 // const avatarsDir = path.join(__dirname, "../../", "public/avatars");
+const avatarsDir = path.resolve("./public/avatars");
 
 const signup = async (req, res) => {
   const { email, password } = req.body;
@@ -19,9 +19,9 @@ const signup = async (req, res) => {
   newUser.setPassword(password);
   await newUser.save();
 
-  //Папка с id для avatar
-  const avatarFolderPath = path.join(avatarsDir, String(newUser._id));
-  await fs.mkdir(avatarFolderPath, { recursive: true });
+  //Папка с id для user's avatars
+  const avatarFolder = path.join(avatarsDir, String(newUser._id));
+  await fs.mkdir(avatarFolder, { recursive: true });
 
   res.status(201).json({
     status: "success",

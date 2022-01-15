@@ -4,9 +4,9 @@ const Jimp = require("jimp");
 const { User } = require("../../models");
 
 // const { FOLDER_FOR_AVATARS } = process.env;
-
-const avatarsDir = path.resolve("public/avatars");
 // const avatarsDir = path.join(__dirname, "../../", "public/avatars");
+
+const avatarsDir = path.resolve("./public/avatars"); //папка для сохранения
 
 const uploadAvatar = async (req, res) => {
   const { _id: id } = req.user;
@@ -14,26 +14,21 @@ const uploadAvatar = async (req, res) => {
   const { path: tempUpload, filename } = req.file;
   try {
     const file = await Jimp.read(tempUpload);
-    await file.autocrop().cover(250, 250).writeAsync(tempUpload);
+    await file.autocrop().cover(250, 250).writeAsync(tempUpload); //обрезает картинку
+    const destination = path.join(`${id}`, filename); //добавляет папку для аватаров пользователя
+    const resultPath = path.join(avatarsDir, destination);
 
-    const resultDir = path.join(avatarsDir, filename);
+    await fs.rename(tempUpload, resultPath);
 
-    await fs.rename(tempUpload, resultDir);
-    console.log(tempUpload);
-    console.log(resultDir);
-    const avatar = path.join(`${id}`, filename);
-    // const avatar = path.join(`${id}`, `${id}_${filename}`);
+    const avatar = path.join(`${id}`, filename); //путь к картинке
+    // const avatar = path.join(`${id}`, `${id}_${filename}`); // добавляет id к имени файла
 
-    const result = await User.findByIdAndUpdate(
-      id,
-      { avatarURL: avatar },
-      { new: true }
-    );
-    res.status(201).json({
+    await User.findByIdAndUpdate(id, { avatarURL: avatar }, { new: true });
+    res.status(200).json({
       status: "success",
-      code: 201,
+      code: 200,
       data: {
-        result,
+        avatarURL: avatar,
       },
     });
   } catch (error) {
