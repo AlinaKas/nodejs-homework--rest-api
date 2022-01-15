@@ -10,17 +10,15 @@ const avatarsDir = path.resolve("./public/avatars"); //папка для хра�
 
 const uploadAvatar = async (req, res) => {
   const { _id: id } = req.user;
-
   const { path: tempUpload, filename } = req.file;
+  const destination = path.join(`${id}`, filename); //путь к папке для аватаров пользователя
+  const resultPath = path.join(avatarsDir, destination);
   try {
     const file = await Jimp.read(tempUpload);
-    await file.autocrop().cover(250, 250).writeAsync(tempUpload); //обрезает картинку
-    const destination = path.join(`${id}`, filename); //добавляет папку для аватаров пользователя
-    const resultPath = path.join(avatarsDir, destination);
+    await file.autocrop().cover(250, 250).writeAsync(tempUpload); //форматирование аватара
 
     await fs.rename(tempUpload, resultPath);
-
-    const avatar = path.join("/avatars", `${id}`, filename); //путь к картинке
+    const avatar = path.join("/avatars", `${id}`, filename); //путь к аватару для API
     // const avatar = path.join(`${id}`, `${id}_${filename}`); // добавляет id к имени файла
 
     await User.findByIdAndUpdate(id, { avatarURL: avatar }, { new: true });
