@@ -19,7 +19,7 @@ const uploadConfig = multer.diskStorage({
     }
     cb(new Error("Wrong file format for avatar"));
   },
-  limits: { fileSize: 2048 },
+  limits: { fileSize: 5000 },
 });
 
 const upload = multer({ storage: uploadConfig });
