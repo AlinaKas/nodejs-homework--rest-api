@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
+const gravatar = require("gravatar");
 const { emailRegex } = require("../config/constants");
 
 const userSchema = Schema(
@@ -24,6 +25,13 @@ const userSchema = Schema(
     token: {
       type: String,
       default: null,
+    },
+    avatarURL: {
+      type: String,
+      default: function () {
+        return gravatar.url(this.email, { s: "250" }, true);
+      },
+      required: true,
     },
   },
   { versionKey: false, timestamps: true }

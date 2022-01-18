@@ -11,12 +11,15 @@ require("dotenv").config();
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
+
 app.use(helmet());
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json({ limit: LIMIT_JSON })); // limit json
 
-app.use("/api/auth", authRouter);
+app.use(express.static("public"));
+
+app.use("/api/users", authRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((_req, res) => {
