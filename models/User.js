@@ -69,15 +69,3 @@ const joiSubscriptionSchema = Joi.object({
 
 const User = model("user", userSchema);
 module.exports = { User, joiUserSchema, joiSubscriptionSchema };
-
-//Альтернатива  - Cоздание пароля с помощью схемы - async
-// userSchema.pre("save", async function (next) {
-//   if (this.isModified("password")) {
-//     const salt = await bcrypt.genSalt(10);
-//     this.password = await bcrypt.hash(this.password, salt);
-//   }
-//   next();
-// });
-// userSchema.methods.comparePassword = async function (password) {
-//   return await bcrypt.compareSync(password, this.password);
-// };
