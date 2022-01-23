@@ -5,8 +5,8 @@ const verify = async (req, res) => {
   const { verificationToken } = req.params;
   const user = await User.findOne({ verificationToken });
   if (!user) {
-    // throw new NotFound("User not found");
-    throw new BadRequest("Invalid token");
+    throw new NotFound("User not found");
+    // throw new BadRequest("Invalid token");
   }
   await User.findByIdAndUpdate(user._id, {
     verify: true,
