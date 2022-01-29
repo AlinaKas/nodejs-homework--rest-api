@@ -18,22 +18,25 @@ router.post(
   validation(joiUserSchema),
   controllerWrap(ctrl.signup)
 );
-
 router.post("/login", validation(joiUserSchema), controllerWrap(ctrl.login));
-
 router.get("/logout", authenticate, controllerWrap(ctrl.logout));
 router.get("/current", authenticate, controllerWrap(ctrl.current));
+
 router.patch(
   "/",
   authenticate,
   validation(joiSubscriptionSchema),
   controllerWrap(ctrl.subscriptionUpdate)
 );
+
 router.patch(
   "/avatars",
   authenticate,
   upload.single("avatar"),
   controllerWrap(ctrl.uploadAvatar)
 );
+
+router.get("/verify/:verificationToken", controllerWrap(ctrl.verify));
+router.post("/verify/", controllerWrap(ctrl.repeatVerify));
 
 module.exports = router;

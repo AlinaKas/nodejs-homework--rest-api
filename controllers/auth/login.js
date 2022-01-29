@@ -1,7 +1,7 @@
 // const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../../models");
-const { BadRequest } = require("http-errors");
+const { BadRequest, Unauthorized } = require("http-errors");
 require("dotenv").config();
 const { SECRET_KEY } = process.env;
 
@@ -10,6 +10,9 @@ const login = async (req, res) => {
   const user = await User.findOne({ email });
   if (!user || !user.comparePassword(password)) {
     throw new BadRequest(`Wrong email or password`);
+  }
+  if (!user?.verify) {
+    throw new Unauthorized("Email not verified");
   }
   const { subscription, avatarURL } = user;
   const payload = {
